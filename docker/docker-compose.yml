@@ -1,0 +1,33 @@
+# docker-composeのバージョン
+version: "3" 
+
+# コンテナの定義
+services:
+
+  # nginxコンテナ
+  web:
+    # コンテナ名
+    container_name: "web"
+    # コンテナ作成に使用するDockerfileのパス
+    build:
+      dockerfile: "./web/Dockerfile"
+    # ホストとコンテナのポート番号の対応付け
+    # <ホスト側のポート>:<コンテナ側のポート>
+    ports:
+      - "8080:80"
+    # volumeをバインド
+    # <ホスト側のパス>:<コンテナ側のパス>
+    # srcは後ほど作成するlaravelプロジェクト
+    volumes:
+      - "../src:/var/www/html"
+
+  # PHPコンテナ
+  php:
+    # コンテナ名
+    container_name: "php"
+    # コンテナ作成に使用するDockerfileのパス
+    build:
+      dockerfile: "./php/Dockerfile"
+    # volumeをバインド
+    volumes:
+      - "../src:/var/www/html"
